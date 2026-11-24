@@ -181,11 +181,11 @@
           <button onclick="switchTab('projects')" data-nav="projects" class="nav-item w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-all text-purple-200/75 hover:text-white hover:bg-purple-900/35">
             <span class="flex items-center gap-2.5">
               <svg class="w-4 h-4 text-purple-300/80 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-          <button onclick="switchTab('projects')" data-nav="projects" class="nav-item w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium transition-all text-purple-200/75 hover:text-white hover:bg-purple-900/35">
-            <svg class="w-4 h-4 text-purple-300/80 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
-            </svg>
-            <span>Projects &amp; Creations</span>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+              </svg>
+              <span>Projects &amp; Creations</span>
+            </span>
+            <span id="sidebar-project-count" class="text-[10px] font-mono px-1.5 py-0.5 rounded-full bg-[#251430] text-pink-200 border border-pink-400/20">7</span>
           </button>
 
           <button onclick="switchTab('experience')" data-nav="experience" class="nav-item w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium transition-all text-purple-200/75 hover:text-white hover:bg-purple-900/35">
@@ -357,7 +357,7 @@
               </svg>
               <input id="global-search-input" type="text" oninput="handleQuickSearch(this.value)" placeholder="Search creations..." class="bg-transparent border-none outline-none text-xs text-pink-100 placeholder-purple-300/50 w-full" />
             </div>
-            <kbd class="px-1.5 py-0.2 rounded border border-purple-400/25 text-[10px] font-mono text-purple-300/60">/</kbd>
+            <kbd class="px-1.5 py-0.5 rounded border border-purple-400/25 text-[10px] font-mono text-purple-300/60">/</kbd>
           </div>
 
           <button onclick="openOwnerUnlockModal()" id="header-owner-lock-btn" class="px-3 py-1.5 rounded-lg text-xs font-medium border border-pink-400/25 bg-[#251430] hover:bg-[#311b40] text-pink-100 flex items-center gap-1.5 transition" title="Owner Access">
@@ -382,7 +382,7 @@
       </div>
 
       <!-- ========================================================= -->
-      <!-- TAB 1: ABOUT & PROFILE (EXACT DREAMY TWILIGHT HERO)       -->
+      <!-- TAB 1: ABOUT & PROFILE (DREAMY TWILIGHT HERO)            -->
       <!-- ========================================================= -->
       <section id="tab-overview" class="space-y-6 pb-8">
 
@@ -409,13 +409,13 @@
 
               <!-- Soft Glowing Stars -->
               <g fill="#fff6fc">
-                <circle cx="110" cy="42" r="1.6" opacity="0.8"/>
+                <circle cx="110" cy="42" r="1.6" class="animate-twinkle"/>
                 <circle cx="240" cy="30" r="2" opacity="0.9"/>
                 <circle cx="380" cy="54" r="1.4" opacity="0.7"/>
-                <circle cx="490" cy="28" r="1.8" opacity="0.85"/>
+                <circle cx="490" cy="28" r="1.8" class="animate-twinkle"/>
                 <circle cx="620" cy="40" r="1.5" opacity="0.75"/>
                 <circle cx="770" cy="34" r="2.1" opacity="0.9"/>
-                <circle cx="965" cy="38" r="1.7" opacity="0.8"/>
+                <circle cx="965" cy="38" r="1.7" class="animate-twinkle"/>
                 <circle cx="1080" cy="52" r="1.5" opacity="0.75"/>
                 <!-- 4-Point Sparkle Stars -->
                 <path d="M518 46 L520 53 L527 55 L520 57 L518 64 L516 57 L509 55 L516 53 Z" opacity="0.9"/>
@@ -1292,14 +1292,6 @@
       }
     }
 
-    function handlePlusQuickAction() {
-      if (!isOwnerUnlocked) {
-        openOwnerUnlockModal();
-      } else {
-        openAddProjectModal();
-      }
-    }
-
     function handleQuickSearch(val) {
       searchQuery = (val || '').trim().toLowerCase();
       if (searchQuery && activeTab !== 'projects') {
@@ -1573,6 +1565,8 @@
       renderExperienceAndSkills();
       renderActivities();
       syncOwnerVisibility();
+      const countEl = document.getElementById('sidebar-project-count');
+      if (countEl) countEl.textContent = appState.projects.length;
     }
 
     function getEducationIllustrationSVG(type) {
@@ -1605,6 +1599,7 @@
       const p = appState.profile;
       document.getElementById('sidebar-name').textContent = `${p.name} ♡`;
       document.getElementById('sidebar-handle').textContent = p.nickname || 'putri-void';
+      document.getElementById('sidebar-tagline').textContent = p.tagline || 'Dream • Code • Create ♡';
       document.getElementById('hero-name').innerHTML = `${escapeHTML(p.name)} <span class="text-pink-300 font-normal">♡</span>`;
       document.getElementById('hero-handle').textContent = p.nickname || 'putri-void';
       document.getElementById('hero-role').textContent = p.role;
